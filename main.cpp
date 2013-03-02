@@ -42,7 +42,9 @@ int main(int argc, char *argv[]) {
 
     bool gui_enabled = false;
     bool coop_enabled = false;
-
+    
+    /* This is where the initial file for data output is created
+       Cooperation or Competition creates different .csv files*/
     ofstream resultsFile;
     if (coop_enabled == true) {
         resultsFile.open("MaxMeanFitness_2_1_Coop.csv");
