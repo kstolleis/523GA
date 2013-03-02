@@ -1,3 +1,11 @@
+/* Karl Stolleis
+   Cianan Sims
+   CS523 Spring 2013
+   University of New Mexico
+   All code modified from base code provided by Dr. Melanie Moses
+   See Below Comments 
+ */
+
 // **********************
 // Melanie Moses' Lab, Computer Science Dept, University of New Mexico,
 // Author: Matthew Fricke
@@ -156,12 +164,17 @@ int main(int argc, char *argv[]) {
             total_current_interaction++;
         }
 
+        /* This simply opens the file created at the top of main
+         */
         if (coop_enabled == true) {
             resultsFile.open("MaxMeanFitness_2_1_Coop.csv", ios::out | ios::app);
         } else {
             resultsFile.open("MaxMeanFitness_2_1.csv", ios::out | ios::app);
         }
 
+        /* The Max Fitness, Mean Fitness and Genome of Best Colony from GA1
+           are written to the file here in comma delimited form
+         */
         resultsFile << current_generation                               << ","; 
         resultsFile << ga1->getMaxFitness()                             << ",";
         resultsFile << ga1->getAverageFitness()                         << ",";
@@ -180,6 +193,9 @@ int main(int argc, char *argv[]) {
         resultsFile << ga1->getFittestColony()->decay_rate              << ',';
         resultsFile << ga1->getFittestColony()->seeds_collected         << ',';
         
+        /* The Max Fitness, Mean Fitness and Genome of Best Colony from GA2
+           are written to the file here in comma delimited form
+         */
         resultsFile << ga2->getMaxFitness()                             << ",";
         resultsFile << ga2->getAverageFitness()                         << ",";
         resultsFile << ga2->getFittestColony()->walk_drop_rate          << ',';
@@ -197,8 +213,10 @@ int main(int argc, char *argv[]) {
         resultsFile << ga2->getFittestColony()->decay_rate              << ',';
         resultsFile << ga2->getFittestColony()->seeds_collected         << '\n';
 
+        // Close the file to complete write
         resultsFile.close();
 
+        // Put console debug messages here
 //        ga1->getFittestColony()->printGenome();
 //        cout << "\n";
 //        ga2->getFittestColony()->printGenome();
