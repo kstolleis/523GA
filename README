@@ -1,7 +1,7 @@
 Compiling AntBots: 
 
 type make in the src directory. The executable is placed
-in the directory above src.
+in the directory with source code.
 
 make clean - cleans up the object and executable files
 
@@ -21,7 +21,7 @@ Version History:
 Release 1.4:
 
 1) Added comments for Colony::getFitness() and replaced the magic number 1280 with 
-   the caclulated variable total_seeds_available.
+   the calculated variable total_seeds_available.
 
 2) Made GA::getAverageFitness() use the fitness function from Colony rather than the
  number of seeds collected.
