@@ -98,7 +98,9 @@ int main(int argc, char *argv[]) {
         for (int current_interaction = 0; current_interaction < n_interactions; current_interaction++) {
 
             thread_current_step = new int[omp_get_num_threads()];
-            for (int i = 0; i < omp_get_num_threads(); i++) thread_current_step[i] = 0;
+            for (int i = 0; i < omp_get_num_threads(); i++){
+                thread_current_step[i] = 0;
+            }
 
 
             // The number of colonies to place on the field at once
@@ -132,14 +134,18 @@ int main(int argc, char *argv[]) {
 
             // Only visualize ant foraging for simulations running in thread 0.
             // The GUI takes a pointer to the 2d grid in field and displays its state.
-            if (omp_get_thread_num() == 0 && gui_enabled) gui->setGrid(field.getGridWidth(), field.getGridHeight(), field.getGrid());
+            if (omp_get_thread_num() == 0 && gui_enabled){
+                gui->setGrid(field.getGridWidth(), field.getGridHeight(), field.getGrid());
+            }
 
             // This loop calls Field::run() repeatedly. Each call to run is a complete evaluation of
             // the ants and grid for one time step. Variable n_steps is how many time steps to run
             // before ending this interaction.
             for (int i = 0; i < n_steps; i++) {
                 field.run(coop_enabled);
-                if (omp_get_thread_num() == 0 && gui_enabled) gui->update();
+                if (omp_get_thread_num() == 0 && gui_enabled){
+                    gui->update();
+                }
                 thread_current_step[omp_get_thread_num()] = i;
             }
 
@@ -149,15 +155,19 @@ int main(int argc, char *argv[]) {
             if (coop_enabled) {
 
                 int sum_seeds = 0;
-                for (int i = 0; i < pop; i++)
+                for (int i = 0; i < pop; i++){
                     sum_seeds += colonies[i]->seeds_collected;
+                }
 
-                for (int i = 0; i < pop; i++)
+                for (int i = 0; i < pop; i++){
                     colonies[i]->seeds_collected = sum_seeds / pop;
+                }
 
             }
 
-            if (omp_get_thread_num() == 0 && gui_enabled) gui->invalidateGrid();
+            if (omp_get_thread_num() == 0 && gui_enabled){
+                gui->invalidateGrid();
+            }
 
             colonies[0]->foraging = false;
             colonies[1]->foraging = false;
