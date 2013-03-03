@@ -15,24 +15,24 @@
 
 class GA
 {
- public:
+    public:
 
-  GA(int pop);
-  void evolve(); // The function which evaluates the current population and creates a new one
-  int getNumberOfColonies();
-  Colony* getColony(int index);
-  Colony* getFittestColony();
-  float getAverageFitness();
-  float getMaxFitness();
-  ~GA();
+        GA(int pop);
+        void evolve();                  // The function which evaluates the current population and creates a new one
+        int getNumberOfColonies();
+        Colony* getColony(int index);
+        Colony* getFittestColony();
+        float getAverageFitness();
+        float getMaxFitness();
+        ~GA();
 
-  private:
-  Colony* colonies; // Array to hold the population of colonies
-  float mutation_range; // range of a gaussian distribution centered on 0 from which mutations are chosen
-  float crossover_rate;	// Percent chance for crossover.  50 is complete shuffling.  0 or 100 is no crossover
-  
-  int n_colonies;
+    private:
+        Colony* colonies;               // Array to hold the population of colonies
+        float mutation_range;           // range of a gaussian distribution centered on 0 from which mutations are chosen
+        float crossover_rate;	        // Percent chance for crossover.  50 is complete shuffling.  0 or 100 is no crossover
 
-  
+        int n_colonies;
+
+
 };
 #endif
