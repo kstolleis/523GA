@@ -1,9 +1,17 @@
+/* Karl Stolleis
+   Cianan Sims
+   CS523 Spring 2013
+   University of New Mexico
+   All code modified from base code provided by Dr. Melanie Moses
+   See Below Comments 
+ */
+
 // The Genetic Algorithm Class implementation file
 #include "GA.h"
-#include "Utils.h" // Some utility functions, ie. normalRand() is defined in Utils.h
+#include "Utils.h"      // Some utility functions, ie. normalRand() is defined in Utils.h
 
 using namespace std;
-using namespace utils; // So we can access the namespace in Utils.h
+using namespace utils;  // So we can access the namespace in Utils.h
 
 // Flags to set whether the ants use site fidelity and pheromone recruitment
 bool recruit = true;
@@ -61,14 +69,14 @@ Colony* GA::getColony(int index) {
 }
 
 
-// Apply the genetic algorithm to the current population and generate a new population. Corresponds to the creation of a new generation.
-
+// Apply the genetic algorithm to the current population and generate a new population. 
+//Corresponds to the creation of a new generation.
 void GA::evolve() {
 
     // Allocate a place to put the new population
     Colony* new_colonies = new Colony[n_colonies];
     int crossoverPercentage = 100;
-    int mutationPercentage = 5;      // 10 is 10% chance of mutation, 5 is 20%, 20 is 5% -- and so on
+    int mutationPercentage = 10;      // 10 is 10% chance of mutation, 5 is 20%, 20 is 5% -- and so on
 
     // Parents of the next population are selected by tournament. Two members of the population are chosen randomly. The fitter of the two is chosen to be a parent. This is repeated so two parents are selected. The parents genomes are mutated and crossed over to produce offspring to fill the next population array. 
     for (int i = 0; i < n_colonies; i++) {
@@ -229,7 +237,7 @@ void GA::evolve() {
             new_colonies[i].decay_rate_return = colonies[parent2].decay_rate_return;
         }
 
-        // Begin random mutation of the offsprings genome. Every location in the genome has a 1/10 probabilty of being mutated.
+        // Begin random mutation of the offsprings genome. Every location in the genome has a 1/10 probability of being mutated.
 
         // Random mutation
         if (rand() % mutationPercentage == 0) {
@@ -290,7 +298,7 @@ void GA::evolve() {
                 new_colonies[i].dense_const += randomNormal(0, 0.001 + fabs(new_colonies[i].dense_const * mutation_range));
             }
         }
-        if (patch) // The patch flag indicates whether the ants emply patch fidelity (ie they return to the last place they got a seed).
+        if (patch) // The patch flag indicates whether the ants empty patch fidelity (ie they return to the last place they got a seed).
         {
             if (rand() % mutationPercentage == 0) {
                 new_colonies[i].dense_const_patch += randomNormal(0, 0.001 + fabs(new_colonies[i].dense_const_patch * mutation_range));
