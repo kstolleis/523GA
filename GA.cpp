@@ -76,7 +76,7 @@ void GA::evolve() {
     // Allocate a place to put the new population
     Colony* new_colonies = new Colony[n_colonies];
     int crossoverPercentage = 100;
-    int mutationPercentage = 10;      // 10 is 10% chance of mutation, 5 is 20%, 20 is 5% -- and so on
+    int mutationPercentage = 5;      // 10 is 10% chance of mutation, 5 is 20%, 20 is 5% -- and so on
 
     // Parents of the next population are selected by tournament. Two members of the population are chosen randomly. The fitter of the two is chosen to be a parent. This is repeated so two parents are selected. The parents genomes are mutated and crossed over to produce offspring to fill the next population array. 
     for (int i = 0; i < n_colonies; i++) {
