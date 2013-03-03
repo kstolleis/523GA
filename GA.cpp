@@ -77,164 +77,257 @@ void GA::evolve() {
     Colony* new_colonies = new Colony[n_colonies];
     int crossoverPercentage = 100;
     int mutationPercentage = 10;      // 10 is 10% chance of mutation, 5 is 20%, 20 is 5% -- and so on
+    int crossover_type = 0;
+    int num_crossovers = 10;
+    int parent_type = 1;
+    int bucket;
+    int halfway = floor((float) n_colonies / 2);
+
+
+
 
     // Parents of the next population are selected by tournament. Two members of the population are chosen randomly. The fitter of the two is chosen to be a parent. This is repeated so two parents are selected. The parents genomes are mutated and crossed over to produce offspring to fill the next population array. 
     for (int i = 0; i < n_colonies; i++) {
-        int parent1;
-        int parent2;
         int candidate1;
         int candidate2;
+        int possibleParent1 = 0;
+        int possibleParent2 = halfway;
+        int parent1;
+        int parent2;
 
-        // 1st parent candidates
-        candidate1 = rand() % n_colonies;
-        candidate2 = rand() % n_colonies;
-        while (candidate1 == candidate2)
-            candidate2 = rand() % n_colonies;
-
-        if (colonies[candidate1].getFitness() > colonies[candidate2].getFitness()) {
-            parent1 = candidate1;
+        if (parent_type == 1) {
+            // parent1 is fittest of first half of colonies; parent2 is fittest of latter half
+            for (int j = 0; j < halfway; j++) {
+                if (colonies[j].getFitness() > colonies[possibleParent1].getFitness()) {
+                    possibleParent1 = j;
+                }
+                if (colonies[j+halfway].getFitness() > colonies[possibleParent2].getFitness()) {
+                    possibleParent2 = j+halfway;
+                }
+            }
+            parent1 = possibleParent1;
+            parent2 = possibleParent2;
         } else {
-            parent1 = candidate2;
-        }
-
-        // 2nd parent candidates
-        candidate1 = rand() % n_colonies;
-        candidate2 = rand() % n_colonies;
-        while (candidate1 == candidate2)
+            // original parent-determination method
+            candidate1 = rand() % n_colonies;
             candidate2 = rand() % n_colonies;
+            while (candidate1 == candidate2)
+                candidate2 = rand() % n_colonies;
 
-        if (colonies[candidate1].getFitness() > colonies[candidate2].getFitness()) {
-            parent2 = candidate1;
-        } else {
-            parent2 = candidate2;
+            if (colonies[candidate1].getFitness() > colonies[candidate2].getFitness()) {
+                parent1 = candidate1;
+            } else {
+                parent1 = candidate2;
+            }
+
+            // 2nd parent candidates
+            candidate1 = rand() % n_colonies;
+            candidate2 = rand() % n_colonies;
+            while (candidate1 == candidate2)
+                candidate2 = rand() % n_colonies;
+
+            if (colonies[candidate1].getFitness() > colonies[candidate2].getFitness()) {
+                parent2 = candidate1;
+            } else {
+                parent2 = candidate2;
+            }
         }
 
         // Begin crossover of the parental genomes. (This version of crossover is not standard)
 
-        // Independent assortment of decay_rate parameter
-        if (rand() % crossoverPercentage < crossover_rate) {
-            new_colonies[i].decay_rate = colonies[parent1].decay_rate;
-        } else {
-            new_colonies[i].decay_rate = colonies[parent2].decay_rate;
-        }
+        if (crossover_type == 1) {
+            // Crossover at one point in in group-based fashion.
+            // Switch parent half-way through colonies.
+            if (i < halfway) {
+                new_colonies[i].decay_rate = colonies[parent1].decay_rate;
+                new_colonies[i].walk_drop_rate = colonies[parent1].walk_drop_rate;
+                new_colonies[i].search_giveup_rate = colonies[parent1].search_giveup_rate;
+                new_colonies[i].trail_drop_rate = colonies[parent1].trail_drop_rate;
+                new_colonies[i].prop_active = colonies[parent1].prop_active;
+                new_colonies[i].activate_sensitivity = colonies[parent1].activate_sensitivity;
+                new_colonies[i].decay_rate_return = colonies[parent1].decay_rate_return;
 
-        // Independent assortment of walk_drop_rate parameter
-        if (rand() % crossoverPercentage < crossover_rate) {
-            new_colonies[i].walk_drop_rate = colonies[parent1].walk_drop_rate;
-        } else {
-            new_colonies[i].walk_drop_rate = colonies[parent2].walk_drop_rate;
-        }
+                new_colonies[i].dir_dev_coeff2 = colonies[parent1].dir_dev_coeff2;
+                new_colonies[i].dir_time_pow2 = colonies[parent1].dir_time_pow2;
+                new_colonies[i].dense_thresh = colonies[parent1].dense_thresh;
+                new_colonies[i].dense_const = colonies[parent1].dense_const;
+                new_colonies[i].dense_const_patch = colonies[parent1].dense_const_patch;
+                new_colonies[i].dense_thresh_patch = colonies[parent1].dense_thresh_patch;
+                new_colonies[i].dense_const_influence = colonies[parent1].dense_const_influence;
+                new_colonies[i].dense_thresh_influence = colonies[parent1].dense_thresh_influence;
+                new_colonies[i].prop_active = colonies[parent1].prop_active;
+                new_colonies[i].activate_sensitivity = colonies[parent1].activate_sensitivity;
+                new_colonies[i].decay_rate_return = colonies[parent1].decay_rate_return;
+            } else {
+                new_colonies[i].decay_rate = colonies[parent2].decay_rate;
+                new_colonies[i].walk_drop_rate = colonies[parent2].walk_drop_rate;
+                new_colonies[i].search_giveup_rate = colonies[parent2].search_giveup_rate;
+                new_colonies[i].trail_drop_rate = colonies[parent2].trail_drop_rate;
+                new_colonies[i].prop_active = colonies[parent2].prop_active;
+                new_colonies[i].activate_sensitivity = colonies[parent2].activate_sensitivity;
+                new_colonies[i].decay_rate_return = colonies[parent2].decay_rate_return;
 
-        // Independent assortment of search_giveup_rate parameter
-        if (rand() % crossoverPercentage < crossover_rate) {
-            new_colonies[i].search_giveup_rate = colonies[parent1].search_giveup_rate;
-        } else {
-            new_colonies[i].search_giveup_rate = colonies[parent2].search_giveup_rate;
-        }
+                new_colonies[i].dir_dev_coeff2 = colonies[parent2].dir_dev_coeff2;
+                new_colonies[i].dir_time_pow2 = colonies[parent2].dir_time_pow2;
+                new_colonies[i].dense_thresh = colonies[parent2].dense_thresh;
+                new_colonies[i].dense_const = colonies[parent2].dense_const;
+                new_colonies[i].dense_const_patch = colonies[parent2].dense_const_patch;
+                new_colonies[i].dense_thresh_patch = colonies[parent2].dense_thresh_patch;
+                new_colonies[i].dense_const_influence = colonies[parent2].dense_const_influence;
+                new_colonies[i].dense_thresh_influence = colonies[parent2].dense_thresh_influence;
+                new_colonies[i].prop_active = colonies[parent2].prop_active;
+                new_colonies[i].activate_sensitivity = colonies[parent2].activate_sensitivity;
+                new_colonies[i].decay_rate_return = colonies[parent2].decay_rate_return;
+            }
+        } else if (crossover_type == 3) {
+            // n-point crossover
+            // 1. Determine which "bucket" current colony i falls into
+            // 2. Determine which parent corresponds to that bucket
+            //      Odd buckets go with parent1
+            //      Even buckets go with parent2
+            bucket = i % num_crossovers;
+            if (bucket % 2 == 0) {
+                new_colonies[i].decay_rate = colonies[parent1].decay_rate;
+                new_colonies[i].walk_drop_rate = colonies[parent1].walk_drop_rate;
+                new_colonies[i].search_giveup_rate = colonies[parent1].search_giveup_rate;
+                new_colonies[i].trail_drop_rate = colonies[parent1].trail_drop_rate;
+                new_colonies[i].prop_active = colonies[parent1].prop_active;
+                new_colonies[i].activate_sensitivity = colonies[parent1].activate_sensitivity;
+                new_colonies[i].decay_rate_return = colonies[parent1].decay_rate_return;
 
-        // Independent assortment of trail_drop_rate parameter
-        if (rand() % crossoverPercentage < crossover_rate) {
-            new_colonies[i].trail_drop_rate = colonies[parent1].trail_drop_rate;
-        } else {
-            new_colonies[i].trail_drop_rate = colonies[parent2].trail_drop_rate;
-        }
+                new_colonies[i].dir_dev_coeff2 = colonies[parent1].dir_dev_coeff2;
+                new_colonies[i].dir_time_pow2 = colonies[parent1].dir_time_pow2;
+                new_colonies[i].dense_thresh = colonies[parent1].dense_thresh;
+                new_colonies[i].dense_const = colonies[parent1].dense_const;
+                new_colonies[i].dense_const_patch = colonies[parent1].dense_const_patch;
+                new_colonies[i].dense_thresh_patch = colonies[parent1].dense_thresh_patch;
+                new_colonies[i].dense_const_influence = colonies[parent1].dense_const_influence;
+                new_colonies[i].dense_thresh_influence = colonies[parent1].dense_thresh_influence;
+                new_colonies[i].prop_active = colonies[parent1].prop_active;
+                new_colonies[i].activate_sensitivity = colonies[parent1].activate_sensitivity;
+                new_colonies[i].decay_rate_return = colonies[parent1].decay_rate_return;
+            } else {
+                new_colonies[i].decay_rate = colonies[parent2].decay_rate;
+                new_colonies[i].walk_drop_rate = colonies[parent2].walk_drop_rate;
+                new_colonies[i].search_giveup_rate = colonies[parent2].search_giveup_rate;
+                new_colonies[i].trail_drop_rate = colonies[parent2].trail_drop_rate;
+                new_colonies[i].prop_active = colonies[parent2].prop_active;
+                new_colonies[i].activate_sensitivity = colonies[parent2].activate_sensitivity;
+                new_colonies[i].decay_rate_return = colonies[parent2].decay_rate_return;
 
-        // Independent assortment of dir_dev_const parameter
-        if (rand() % crossoverPercentage < crossover_rate) {
-            new_colonies[i].dir_dev_const = colonies[parent1].dir_dev_const;
-        } else {
-            new_colonies[i].dir_dev_const = colonies[parent2].dir_dev_const;
-        }
+                new_colonies[i].dir_dev_coeff2 = colonies[parent2].dir_dev_coeff2;
+                new_colonies[i].dir_time_pow2 = colonies[parent2].dir_time_pow2;
+                new_colonies[i].dense_thresh = colonies[parent2].dense_thresh;
+                new_colonies[i].dense_const = colonies[parent2].dense_const;
+                new_colonies[i].dense_const_patch = colonies[parent2].dense_const_patch;
+                new_colonies[i].dense_thresh_patch = colonies[parent2].dense_thresh_patch;
+                new_colonies[i].dense_const_influence = colonies[parent2].dense_const_influence;
+                new_colonies[i].dense_thresh_influence = colonies[parent2].dense_thresh_influence;
+                new_colonies[i].prop_active = colonies[parent2].prop_active;
+                new_colonies[i].activate_sensitivity = colonies[parent2].activate_sensitivity;
+                new_colonies[i].decay_rate_return = colonies[parent2].decay_rate_return;
+            }
 
-        // Independent assortment of dir_dev_coeff1 parameter
-        if (rand() % crossoverPercentage < crossover_rate) {
-            new_colonies[i].dir_dev_coeff1 = colonies[parent1].dir_dev_coeff1;
-        } else {
-            new_colonies[i].dir_dev_coeff1 = colonies[parent2].dir_dev_coeff1;
-        }
+        } else {  // standard crossover
+            if (rand() % crossoverPercentage < crossover_rate) {
+                new_colonies[i].decay_rate = colonies[parent1].decay_rate;
+            } else {
+                new_colonies[i].decay_rate = colonies[parent2].decay_rate;
+            }
+            if (rand() % crossoverPercentage < crossover_rate) {
+                new_colonies[i].walk_drop_rate = colonies[parent1].walk_drop_rate;
+            } else {
+                new_colonies[i].walk_drop_rate = colonies[parent2].walk_drop_rate;
+            }
+            if (rand() % crossoverPercentage < crossover_rate) {
+                new_colonies[i].search_giveup_rate = colonies[parent1].search_giveup_rate;
+            } else {
+                new_colonies[i].search_giveup_rate = colonies[parent2].search_giveup_rate;
+            }
+            if (rand() % crossoverPercentage < crossover_rate) {
+                new_colonies[i].trail_drop_rate = colonies[parent1].trail_drop_rate;
+            } else {
+                new_colonies[i].trail_drop_rate = colonies[parent2].trail_drop_rate;
+            }
+            if (rand() % crossoverPercentage < crossover_rate) {
+                new_colonies[i].dir_dev_const = colonies[parent1].dir_dev_const;
+            } else {
+                new_colonies[i].dir_dev_const = colonies[parent2].dir_dev_const;
+            }
+            // UNUSED
+            if (rand() % crossoverPercentage < crossover_rate) {
+                new_colonies[i].dir_dev_coeff1 = colonies[parent1].dir_dev_coeff1;
+            } else {
+                new_colonies[i].dir_dev_coeff1 = colonies[parent2].dir_dev_coeff1;
+            }
+            // UNUSED
+            if (rand() % crossoverPercentage < crossover_rate) {
+                new_colonies[i].dir_time_pow1 = colonies[parent1].dir_time_pow1;
+            } else {
+                new_colonies[i].dir_time_pow1 = colonies[parent2].dir_time_pow1;
+            }
+            if (rand() % crossoverPercentage < crossover_rate) {
+                new_colonies[i].dir_dev_coeff2 = colonies[parent1].dir_dev_coeff2;
+            } else {
+                new_colonies[i].dir_dev_coeff2 = colonies[parent2].dir_dev_coeff2;
+            }
+            if (rand() % crossoverPercentage < crossover_rate) {
+                new_colonies[i].dir_time_pow2 = colonies[parent1].dir_time_pow2;
+            } else {
+                new_colonies[i].dir_time_pow2 = colonies[parent2].dir_time_pow2;
+            }
+            // UNUSED
+            if (rand() % crossoverPercentage < crossover_rate) {
+                new_colonies[i].dense_sens = colonies[parent1].dense_sens;
+            } else {
+                new_colonies[i].dense_sens = colonies[parent2].dense_sens;
+            }
+            if (rand() % crossoverPercentage < crossover_rate) {
+                new_colonies[i].dense_thresh = colonies[parent1].dense_thresh;
+            } else {
+                new_colonies[i].dense_thresh = colonies[parent2].dense_thresh;
+            }
+            if (rand() % crossoverPercentage < crossover_rate) {
+                new_colonies[i].dense_const = colonies[parent1].dense_const;
+            } else {
+                new_colonies[i].dense_const = colonies[parent2].dense_const;
+            }
+            if (rand() % crossoverPercentage < crossover_rate) {
+                new_colonies[i].dense_const_patch = colonies[parent1].dense_const_patch;
+            } else {
+                new_colonies[i].dense_const_patch = colonies[parent2].dense_const_patch;
+            }
+            if (rand() % crossoverPercentage < crossover_rate) {
+                new_colonies[i].dense_thresh_patch = colonies[parent1].dense_thresh_patch;
+            } else {
+                new_colonies[i].dense_thresh_patch = colonies[parent2].dense_thresh_patch;
+            }
+            if (rand() % crossoverPercentage < crossover_rate) {
+                new_colonies[i].dense_const_influence = colonies[parent1].dense_const_influence;
+            } else {
+                new_colonies[i].dense_const_influence = colonies[parent2].dense_const_influence;
+            }
+            if (rand() % crossoverPercentage < crossover_rate) {
+                new_colonies[i].dense_thresh_influence = colonies[parent1].dense_thresh_influence;
+            } else {
+                new_colonies[i].dense_thresh_influence = colonies[parent2].dense_thresh_influence;
+            }
+            if (rand() % crossoverPercentage < crossover_rate) {
+                new_colonies[i].prop_active = colonies[parent1].prop_active;
+            } else {
+                new_colonies[i].prop_active = colonies[parent2].prop_active;
+            }
+            if (rand() % crossoverPercentage < crossover_rate) {
+                new_colonies[i].activate_sensitivity = colonies[parent1].activate_sensitivity;
+            } else {
+                new_colonies[i].activate_sensitivity = colonies[parent2].activate_sensitivity;
+            }
+            if (rand() % crossoverPercentage < crossover_rate) {
+                new_colonies[i].decay_rate_return = colonies[parent1].decay_rate_return;
+            } else {
+                new_colonies[i].decay_rate_return = colonies[parent2].decay_rate_return;
+            }
 
-        // Independent assortment of dir_time_pow1 parameter
-        if (rand() % crossoverPercentage < crossover_rate) {
-            new_colonies[i].dir_time_pow1 = colonies[parent1].dir_time_pow1;
-        } else {
-            new_colonies[i].dir_time_pow1 = colonies[parent2].dir_time_pow1;
-        }
-
-        // Independent assortment of dir_dev_coeff2 parameter
-        if (rand() % crossoverPercentage < crossover_rate) {
-            new_colonies[i].dir_dev_coeff2 = colonies[parent1].dir_dev_coeff2;
-        } else {
-            new_colonies[i].dir_dev_coeff2 = colonies[parent2].dir_dev_coeff2;
-        }
-
-        // Independent assortment of dir_time_pow2 parameter
-        if (rand() % crossoverPercentage < crossover_rate) {
-            new_colonies[i].dir_time_pow2 = colonies[parent1].dir_time_pow2;
-        } else {
-            new_colonies[i].dir_time_pow2 = colonies[parent2].dir_time_pow2;
-        }
-
-        // Independent assortment of dense_sens parameter
-        if (rand() % crossoverPercentage < crossover_rate) {
-            new_colonies[i].dense_sens = colonies[parent1].dense_sens;
-        } else {
-            new_colonies[i].dense_sens = colonies[parent2].dense_sens;
-        }
-        // Independent assortment of dense_thresh parameter
-        if (rand() % crossoverPercentage < crossover_rate) {
-            new_colonies[i].dense_thresh = colonies[parent1].dense_thresh;
-        } else {
-            new_colonies[i].dense_thresh = colonies[parent2].dense_thresh;
-        }
-        // Independent assortment of dense_const parameter
-        if (rand() % crossoverPercentage < crossover_rate) {
-            new_colonies[i].dense_const = colonies[parent1].dense_const;
-        } else {
-            new_colonies[i].dense_const = colonies[parent2].dense_const;
-        }
-        // Independent assortment of dense_const_patch parameter
-        if (rand() % crossoverPercentage < crossover_rate) {
-            new_colonies[i].dense_const_patch = colonies[parent1].dense_const_patch;
-        } else {
-            new_colonies[i].dense_const_patch = colonies[parent2].dense_const_patch;
-        }
-        // Independent assortment of dense_thresh_patch parameter
-        if (rand() % crossoverPercentage < crossover_rate) {
-            new_colonies[i].dense_thresh_patch = colonies[parent1].dense_thresh_patch;
-        } else {
-            new_colonies[i].dense_thresh_patch = colonies[parent2].dense_thresh_patch;
-        }
-
-        // Independent assortment of dense_const_influence parameter
-        if (rand() % crossoverPercentage < crossover_rate) {
-            new_colonies[i].dense_const_influence = colonies[parent1].dense_const_influence;
-        } else {
-            new_colonies[i].dense_const_influence = colonies[parent2].dense_const_influence;
-        }
-        // Independent assortment of dense_thresh_influence parameter
-        if (rand() % crossoverPercentage < crossover_rate) {
-            new_colonies[i].dense_thresh_influence = colonies[parent1].dense_thresh_influence;
-        } else {
-            new_colonies[i].dense_thresh_influence = colonies[parent2].dense_thresh_influence;
-        }
-
-        // Independent assortment of prop_active parameter
-        if (rand() % crossoverPercentage < crossover_rate) {
-            new_colonies[i].prop_active = colonies[parent1].prop_active;
-        } else {
-            new_colonies[i].prop_active = colonies[parent2].prop_active;
-        }
-        // Independent assortment of activate_sensitivity parameter
-        if (rand() % crossoverPercentage < crossover_rate) {
-            new_colonies[i].activate_sensitivity = colonies[parent1].activate_sensitivity;
-        } else {
-            new_colonies[i].activate_sensitivity = colonies[parent2].activate_sensitivity;
-        }
-        // Independent assortment of decay_rate_return parameter
-        if (rand() % crossoverPercentage < crossover_rate) {
-            new_colonies[i].decay_rate_return = colonies[parent1].decay_rate_return;
-        } else {
-            new_colonies[i].decay_rate_return = colonies[parent2].decay_rate_return;
         }
 
         // Begin random mutation of the offsprings genome. Every location in the genome has a 1/10 probability of being mutated.
