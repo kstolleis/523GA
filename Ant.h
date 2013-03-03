@@ -39,7 +39,7 @@ class Ant
   bool pen_down; // false = ant not laying a trail; true = ant laying a trail
   float prev_pher; // Amount of pheromone on previous cell as ant moved along trail.
   float prev_pher_scent; // The out-going sum_pheromone an detected on the previous move by an ant following a trail.
-  float direction; // direction an ant who detected no trail at nest is travelling.  value in degrees.
+  float direction; // direction an ant who detected no trail at nest is traveling.  value in degrees.
   float search_direction; // direction in degrees that a searching ant moved in the previous time step (ideal direction, not grid direction)
 
  private:

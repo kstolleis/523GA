@@ -1,9 +1,17 @@
+/* Karl Stolleis
+   Cianan Sims
+   CS523 Spring 2013
+   University of New Mexico
+   All code modified from base code provided by Dr. Melanie Moses
+   See Below Comments 
+ */
+
 // The Genetic Algorithm Class implementation file
 #include "GA.h"
-#include "Utils.h" // Some utility functions, ie. normalRand() is defined in Utils.h
+#include "Utils.h"      // Some utility functions, ie. normalRand() is defined in Utils.h
 
 using namespace std;
-using namespace utils; // So we can access the namespace in Utils.h
+using namespace utils;  // So we can access the namespace in Utils.h
 
 // Flags to set whether the ants use site fidelity and pheromone recruitment
 bool recruit = true;
@@ -61,8 +69,8 @@ Colony* GA::getColony(int index) {
 }
 
 
-// Apply the genetic algorithm to the current population and generate a new population. Corresponds to the creation of a new generation.
-
+// Apply the genetic algorithm to the current population and generate a new population. 
+//Corresponds to the creation of a new generation.
 void GA::evolve() {
 
     // Allocate a place to put the new population
