@@ -1,3 +1,11 @@
+/* Karl Stolleis
+   Cianan Sims
+   CS523 Spring 2013
+   University of New Mexico
+   All code modified from base code provided by Dr. Melanie Moses
+   See Below Comments 
+ */
+
 #include "Field.h"
 #include <stdlib.h>
 #include <math.h>
