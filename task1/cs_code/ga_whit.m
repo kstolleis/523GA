@@ -1,4 +1,4 @@
-function [P,best,result_gen,result_min_fit,result_mean_fit] = ga_whit(pop_size, chrom_len, pm, max_gen, elitism)
+function [result_gen,result_min_fit,result_mean_fit] = ga_whit(pop_size, chrom_len, max_gen, pm, xover, elitism)
     %
     % Inputs:
     % pop_size  => population size
@@ -25,12 +25,16 @@ function [P,best,result_gen,result_min_fit,result_mean_fit] = ga_whit(pop_size, 
     gen = 1;
     while gen<=max_gen
         % SELECTION
-        [P, best_row] = tournament_selection(P, fit, 2, elitism, best_row);
-        %[P, best_row] = roulette_selection(P, fit, elitism, best_row, chrom_len);
+        %[P, best_row] = tournament_selection(P, fit, 2, elitism, best_row);
+        [P, best_row] = roulette_selection(P, fit, elitism, best_row, chrom_len);
 
         % CROSSOVER
-        %[P, best_row] = two_point_crossover(P, 0.5, elitism, best_row);
-        %[P, best_row] = one_point_crossover(P,0.5, elitism, best_row);
+        if xover == 2
+            [P, best_row] = two_point_crossover(P, 0.5, elitism, best_row);
+        else if xover == 1
+            [P, best_row] = one_point_crossover(P,0.5, elitism, best_row);
+            end
+        end
 
         % MUTATION
         P = point_mutation(P,pm, elitism, best_row);
@@ -78,7 +82,9 @@ function [P] = initialize(pop_size,chrom_length)
 end
 
 function num = gen_rand_num()
-    num = -10.24 + (10.24 - (-10.24)) * rand;
+    %num = -10.24 + (10.24 - (-10.24)) * rand;
+    %num = -10.24 + (10.24 - (-10.24)) * randn(1,1);
+    num = randn(1,1);
 end
 
 function [fit] = maxones_fitness(P)
