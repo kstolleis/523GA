@@ -17,27 +17,27 @@
 
 class Field
 {
- public:
+    public:
 
-  Field( int n_colonies, Colony* cols[]);
-  Location** getGrid();
-  int getGridWidth(){return grid_width;}
-  int getGridHeight(){return grid_height;}
- 
-  ~Field();
+        Field( int n_colonies, Colony* cols[]);
+        Location** getGrid();
+        int getGridWidth(){return grid_width;}
+        int getGridHeight(){return grid_height;}
 
-  void run(bool coop);
+        ~Field();
 
- private:
+        void run(bool coop);
 
-  int total_food;
-  Ant** ants;
-  int n_ants;
-  int n_colonies;
-  Colony** colonies;
-  Location** gen_grid;
-  Location** grid;
-  int grid_height;
-  int grid_width;
+    private:
+
+        int total_food;
+        Ant** ants;
+        int n_ants;
+        int n_colonies;
+        Colony** colonies;
+        Location** gen_grid;
+        Location** grid;
+        int grid_height;
+        int grid_width;
 };
 #endif

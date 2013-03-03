@@ -1,17 +1,9 @@
-/* Karl Stolleis
-   Cianan Sims
-   CS523 Spring 2013
-   University of New Mexico
-   All code modified from base code provided by Dr. Melanie Moses
-   See Below Comments 
- */
-
 // The Genetic Algorithm Class implementation file
 #include "GA.h"
-#include "Utils.h"      // Some utility functions, ie. normalRand() is defined in Utils.h
+#include "Utils.h" // Some utility functions, ie. normalRand() is defined in Utils.h
 
 using namespace std;
-using namespace utils;  // So we can access the namespace in Utils.h
+using namespace utils; // So we can access the namespace in Utils.h
 
 // Flags to set whether the ants use site fidelity and pheromone recruitment
 bool recruit = true;
@@ -69,8 +61,8 @@ Colony* GA::getColony(int index) {
 }
 
 
-// Apply the genetic algorithm to the current population and generate a new population. 
-//Corresponds to the creation of a new generation.
+// Apply the genetic algorithm to the current population and generate a new population. Corresponds to the creation of a new generation.
+
 void GA::evolve() {
 
     // Allocate a place to put the new population
@@ -112,135 +104,135 @@ void GA::evolve() {
         // Begin crossover of the parental genomes. (This version of crossover is not standard)
 
         // Independent assortment of decay_rate parameter
-        if (rand() % crossoverPercentage < crossover_rate) {
+        if (rand() % 100 < crossover_rate) {
             new_colonies[i].decay_rate = colonies[parent1].decay_rate;
         } else {
             new_colonies[i].decay_rate = colonies[parent2].decay_rate;
         }
 
         // Independent assortment of walk_drop_rate parameter
-        if (rand() % crossoverPercentage < crossover_rate) {
+        if (rand() % 100 < crossover_rate) {
             new_colonies[i].walk_drop_rate = colonies[parent1].walk_drop_rate;
         } else {
             new_colonies[i].walk_drop_rate = colonies[parent2].walk_drop_rate;
         }
 
         // Independent assortment of search_giveup_rate parameter
-        if (rand() % crossoverPercentage < crossover_rate) {
+        if (rand() % 100 < crossover_rate) {
             new_colonies[i].search_giveup_rate = colonies[parent1].search_giveup_rate;
         } else {
             new_colonies[i].search_giveup_rate = colonies[parent2].search_giveup_rate;
         }
 
         // Independent assortment of trail_drop_rate parameter
-        if (rand() % crossoverPercentage < crossover_rate) {
+        if (rand() % 100 < crossover_rate) {
             new_colonies[i].trail_drop_rate = colonies[parent1].trail_drop_rate;
         } else {
             new_colonies[i].trail_drop_rate = colonies[parent2].trail_drop_rate;
         }
 
         // Independent assortment of dir_dev_const parameter
-        if (rand() % crossoverPercentage < crossover_rate) {
+        if (rand() % 100 < crossover_rate) {
             new_colonies[i].dir_dev_const = colonies[parent1].dir_dev_const;
         } else {
             new_colonies[i].dir_dev_const = colonies[parent2].dir_dev_const;
         }
 
         // Independent assortment of dir_dev_coeff1 parameter
-        if (rand() % crossoverPercentage < crossover_rate) {
+        if (rand() % 100 < crossover_rate) {
             new_colonies[i].dir_dev_coeff1 = colonies[parent1].dir_dev_coeff1;
         } else {
             new_colonies[i].dir_dev_coeff1 = colonies[parent2].dir_dev_coeff1;
         }
 
         // Independent assortment of dir_time_pow1 parameter
-        if (rand() % crossoverPercentage < crossover_rate) {
+        if (rand() % 100 < crossover_rate) {
             new_colonies[i].dir_time_pow1 = colonies[parent1].dir_time_pow1;
         } else {
             new_colonies[i].dir_time_pow1 = colonies[parent2].dir_time_pow1;
         }
 
         // Independent assortment of dir_dev_coeff2 parameter
-        if (rand() % crossoverPercentage < crossover_rate) {
+        if (rand() % 100 < crossover_rate) {
             new_colonies[i].dir_dev_coeff2 = colonies[parent1].dir_dev_coeff2;
         } else {
             new_colonies[i].dir_dev_coeff2 = colonies[parent2].dir_dev_coeff2;
         }
 
         // Independent assortment of dir_time_pow2 parameter
-        if (rand() % crossoverPercentage < crossover_rate) {
+        if (rand() % 100 < crossover_rate) {
             new_colonies[i].dir_time_pow2 = colonies[parent1].dir_time_pow2;
         } else {
             new_colonies[i].dir_time_pow2 = colonies[parent2].dir_time_pow2;
         }
 
         // Independent assortment of dense_sens parameter
-        if (rand() % crossoverPercentage < crossover_rate) {
+        if (rand() % 100 < crossover_rate) {
             new_colonies[i].dense_sens = colonies[parent1].dense_sens;
         } else {
             new_colonies[i].dense_sens = colonies[parent2].dense_sens;
         }
         // Independent assortment of dense_thresh parameter
-        if (rand() % crossoverPercentage < crossover_rate) {
+        if (rand() % 100 < crossover_rate) {
             new_colonies[i].dense_thresh = colonies[parent1].dense_thresh;
         } else {
             new_colonies[i].dense_thresh = colonies[parent2].dense_thresh;
         }
         // Independent assortment of dense_const parameter
-        if (rand() % crossoverPercentage < crossover_rate) {
+        if (rand() % 100 < crossover_rate) {
             new_colonies[i].dense_const = colonies[parent1].dense_const;
         } else {
             new_colonies[i].dense_const = colonies[parent2].dense_const;
         }
         // Independent assortment of dense_const_patch parameter
-        if (rand() % crossoverPercentage < crossover_rate) {
+        if (rand() % 100 < crossover_rate) {
             new_colonies[i].dense_const_patch = colonies[parent1].dense_const_patch;
         } else {
             new_colonies[i].dense_const_patch = colonies[parent2].dense_const_patch;
         }
         // Independent assortment of dense_thresh_patch parameter
-        if (rand() % crossoverPercentage < crossover_rate) {
+        if (rand() % 100 < crossover_rate) {
             new_colonies[i].dense_thresh_patch = colonies[parent1].dense_thresh_patch;
         } else {
             new_colonies[i].dense_thresh_patch = colonies[parent2].dense_thresh_patch;
         }
 
         // Independent assortment of dense_const_influence parameter
-        if (rand() % crossoverPercentage < crossover_rate) {
+        if (rand() % 100 < crossover_rate) {
             new_colonies[i].dense_const_influence = colonies[parent1].dense_const_influence;
         } else {
             new_colonies[i].dense_const_influence = colonies[parent2].dense_const_influence;
         }
         // Independent assortment of dense_thresh_influence parameter
-        if (rand() % crossoverPercentage < crossover_rate) {
+        if (rand() % 100 < crossover_rate) {
             new_colonies[i].dense_thresh_influence = colonies[parent1].dense_thresh_influence;
         } else {
             new_colonies[i].dense_thresh_influence = colonies[parent2].dense_thresh_influence;
         }
 
         // Independent assortment of prop_active parameter
-        if (rand() % crossoverPercentage < crossover_rate) {
+        if (rand() % 100 < crossover_rate) {
             new_colonies[i].prop_active = colonies[parent1].prop_active;
         } else {
             new_colonies[i].prop_active = colonies[parent2].prop_active;
         }
         // Independent assortment of activate_sensitivity parameter
-        if (rand() % crossoverPercentage < crossover_rate) {
+        if (rand() % 100 < crossover_rate) {
             new_colonies[i].activate_sensitivity = colonies[parent1].activate_sensitivity;
         } else {
             new_colonies[i].activate_sensitivity = colonies[parent2].activate_sensitivity;
         }
         // Independent assortment of decay_rate_return parameter
-        if (rand() % crossoverPercentage < crossover_rate) {
+        if (rand() % 100 < crossover_rate) {
             new_colonies[i].decay_rate_return = colonies[parent1].decay_rate_return;
         } else {
             new_colonies[i].decay_rate_return = colonies[parent2].decay_rate_return;
         }
 
-        // Begin random mutation of the offsprings genome. Every location in the genome has a 1/10 probability of being mutated.
+        // Begin random mutation of the offsprings genome. Every location in the genome has a 1/10 probabilty of being mutated.
 
         // Random mutation
-        if (rand() % mutationPercentage == 0) {
+        if (rand() % 10 == 0) {
             new_colonies[i].decay_rate += randomNormal(0, new_colonies[i].decay_rate * mutation_range);
             if (new_colonies[i].decay_rate < 0.0f)
                 new_colonies[i].decay_rate = 0;
@@ -248,7 +240,7 @@ void GA::evolve() {
                 new_colonies[i].decay_rate = 1.0f;
         }
         // Random mutation
-        if (rand() % mutationPercentage == 0) {
+        if (rand() % 10 == 0) {
             new_colonies[i].walk_drop_rate += randomNormal(0, new_colonies[i].walk_drop_rate * mutation_range);
             if (new_colonies[i].walk_drop_rate < 0.0f)
                 new_colonies[i].walk_drop_rate = 0;
@@ -256,7 +248,7 @@ void GA::evolve() {
                 new_colonies[i].walk_drop_rate = 1.0f;
         }
         // Random mutation
-        if (rand() % mutationPercentage == 0) {
+        if (rand() % 10 == 0) {
             new_colonies[i].search_giveup_rate += randomNormal(0, new_colonies[i].search_giveup_rate * mutation_range);
             if (new_colonies[i].search_giveup_rate < 0.0f)
                 new_colonies[i].search_giveup_rate = 0;
@@ -264,7 +256,7 @@ void GA::evolve() {
                 new_colonies[i].search_giveup_rate = 1.0f;
         }
         // Random mutation
-        if (rand() % mutationPercentage == 0) {
+        if (rand() % 10 == 0) {
             new_colonies[i].trail_drop_rate += randomNormal(0, new_colonies[i].trail_drop_rate * mutation_range);
             if (new_colonies[i].trail_drop_rate < 0.0f)
                 new_colonies[i].trail_drop_rate = 0;
@@ -272,53 +264,53 @@ void GA::evolve() {
                 new_colonies[i].trail_drop_rate = 1.0f;
         }
         // Random mutation
-        if (rand() % mutationPercentage == 0) {
+        if (rand() % 10 == 0) {
             new_colonies[i].dir_dev_const += randomNormal(0, 0.001 + fabs(new_colonies[i].dir_dev_const * mutation_range));
             if (new_colonies[i].dir_dev_const < 0.0f)
                 new_colonies[i].dir_dev_const = 0;
         }
         // Random mutation
-        if (rand() % mutationPercentage == 0) {
+        if (rand() % 10 == 0) {
             new_colonies[i].dir_dev_coeff2 += randomNormal(0, 0.001 + fabs(new_colonies[i].dir_dev_coeff2 * mutation_range));
             if (new_colonies[i].dir_dev_coeff2 < 0.0f)
                 new_colonies[i].dir_dev_coeff2 = 0;
         }
         // Random mutation
-        if (rand() % mutationPercentage == 0) {
+        if (rand() % 10 == 0) {
             new_colonies[i].dir_time_pow2 += randomNormal(0, 0.001 + fabs(new_colonies[i].dir_time_pow2 * mutation_range));
             if (new_colonies[i].dir_time_pow2 < 0.0f)
                 new_colonies[i].dir_time_pow2 = 0;
         }
         // Random mutation
         if (recruit) {
-            if (rand() % mutationPercentage == 0) {
+            if (rand() % 10 == 0) {
                 new_colonies[i].dense_thresh += randomNormal(0, 0.001 + fabs(new_colonies[i].dense_thresh * mutation_range));
             }
-            if (rand() % mutationPercentage == 0) {
+            if (rand() % 10 == 0) {
                 new_colonies[i].dense_const += randomNormal(0, 0.001 + fabs(new_colonies[i].dense_const * mutation_range));
             }
         }
-        if (patch) // The patch flag indicates whether the ants empty patch fidelity (ie they return to the last place they got a seed).
+        if (patch) // The patch flag indicates whether the ants emply patch fidelity (ie they return to the last place they got a seed).
         {
-            if (rand() % mutationPercentage == 0) {
+            if (rand() % 10 == 0) {
                 new_colonies[i].dense_const_patch += randomNormal(0, 0.001 + fabs(new_colonies[i].dense_const_patch * mutation_range));
             }
-            if (rand() % mutationPercentage == 0) {
+            if (rand() % 10 == 0) {
                 new_colonies[i].dense_thresh_patch += randomNormal(0, 0.001 + fabs(new_colonies[i].dense_thresh_patch * mutation_range));
             }
         }
-        if (rand() % mutationPercentage == 0) {
+        if (rand() % 10 == 0) {
             new_colonies[i].dense_const_influence += randomNormal(0, 0.001 + fabs(new_colonies[i].dense_const_influence * mutation_range));
         }
-        if (rand() % mutationPercentage == 0) {
+        if (rand() % 10 == 0) {
             new_colonies[i].dense_thresh_influence += randomNormal(0, 0.001 + fabs(new_colonies[i].dense_thresh_influence * mutation_range));
         }
-        if (rand() % mutationPercentage == 0) {
+        if (rand() % 10 == 0) {
             new_colonies[i].activate_sensitivity += randomNormal(0, 0.001 + fabs(new_colonies[i].activate_sensitivity * mutation_range));
             if (new_colonies[i].activate_sensitivity < 0.0f)
                 new_colonies[i].activate_sensitivity = 0.0;
         }
-        if (rand() % mutationPercentage == 0) {
+        if (rand() % 10 == 0) {
             new_colonies[i].decay_rate_return += randomNormal(0, 0.001 + fabs(new_colonies[i].decay_rate_return * mutation_range));
             if (new_colonies[i].decay_rate_return < 0.0f)
                 new_colonies[i].decay_rate_return = 0.0;

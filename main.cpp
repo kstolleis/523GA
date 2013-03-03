@@ -20,9 +20,9 @@
 
 #ifndef _MAIN
 #define _MAIN
-#include "GA.h"         // For the Genetic Algorithm class
-#include "Field.h"      // For the Field class
-#include <time.h>       // So we can do timing 
+#include "GA.h" // For the Genetic Algorithm class
+#include "Field.h" // For the Field class
+#include <time.h> // So we can do timing 
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -37,10 +37,10 @@ using namespace std;
 
 string version = "Release 1.4";
 
-const int n_generations = 100;          // How many generations should run before the program exits
-const int n_interactions = 60;          // Number of pairwise interactions between colonies per generation
-const int n_colonies = 20;              // Number of colonies in each GAs population
-const int n_steps = 8000;               // The number of time steps to run on the Field where each time step updates the actions of all the ants on the field.
+const int n_generations = 100; // How many generations should run before the program exits
+const int n_interactions = 60; // Number of pairwise interactions between colonies per generation
+const int n_colonies = 20; // Number of colonies in each GAs population
+const int n_steps = 8000; // The number of time steps to run on the Field where each time step updates the actions of all the ants on the field.
 
 // Create the two GAs we will use 
 GA* ga1 = new GA(n_colonies);
@@ -48,12 +48,11 @@ GA* ga2 = new GA(n_colonies);
 
 int main(int argc, char *argv[]) {
 
-    bool gui_enabled = true;
+    bool gui_enabled = false;
     bool coop_enabled = false;
-     
+    
     /* This is where the initial file for data output is created
-       Cooperation or Competition creates different .csv files
-     */
+       Cooperation or Competition creates different .csv files*/
     ofstream resultsFile;
     if (coop_enabled == true) {
         resultsFile.open("MaxMeanFitness_2_2_Coop_HiMut.csv");

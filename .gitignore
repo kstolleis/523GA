@@ -13,3 +13,6 @@ ompiled Object files
 *.a
 
 .DS_Store
+antbots
+*.csv
+
