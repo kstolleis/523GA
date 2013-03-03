@@ -1,4 +1,4 @@
-function [P,best,result_gen,result_max_fit,result_mean_fit] = ga(pop_size, chrom_len, pm, max_gen, elitism)
+function [result_gen,result_max_fit,result_mean_fit] = ga(pop_size, chrom_len, max_gen, pm, xover, elitism)
     %
     % Inputs:
     % pop_size  => population size
@@ -24,28 +24,20 @@ function [P,best,result_gen,result_max_fit,result_mean_fit] = ga(pop_size, chrom
 
     gen = 1;
     while gen<=max_gen & max(fit)<chrom_len
-        row_pre = P(best_row,:);
         % SELECTION
-        [P, best_row] = tournament_selection(P, fit, 2, elitism, best_row);
-        %[P, best_row] = roulette_selection(P, fit, elitism, best_row);
-
-        row_first = P(best_row,:);
+        %[P, best_row] = tournament_selection(P, fit, 2, elitism, best_row);
+        [P, best_row] = roulette_selection(P, fit, elitism, best_row);
 
         % CROSSOVER
-        %[P, best_row] = two_point_crossover(P, 0.5, elitism, best_row);
-        %[P, best_row] = one_point_crossover(P,0.5, elitism, best_row);
-        
-        row_crossover = P(best_row,:);
+        if xover == 1
+            [P, best_row] = one_point_crossover(P,0.5, elitism, best_row);
+        else if xover == 2
+            [P, best_row] = two_point_crossover(P, 0.5, elitism, best_row);
+            end
+        end
 
         % MUTATION
         P = point_mutation(P,pm, elitism, best_row);
-
-        row_mut = P(best_row,:);
-        
-        pre = all(row_pre == row_first);
-        first_x = all(row_first == row_crossover);
-        x_mut = all(row_crossover == row_mut);
-        %disp([pre, first_x, x_mut, max_val]);
         
         % EVALUATION
         fit = maxones_fitness(P);
@@ -55,7 +47,7 @@ function [P,best,result_gen,result_max_fit,result_mean_fit] = ga(pop_size, chrom
         mean_fit(gen) = mean(fit);
 
         % display information
-        disp_info(gen,max_fit(gen),mean_fit(gen));
+        %disp_info(gen,max_fit(gen),mean_fit(gen));
 
         
         result_gen = gen;
