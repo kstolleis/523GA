@@ -484,26 +484,6 @@ float GA::getMaxFitness() {
     return max;
 }
 
-void bubbleSort(float array[], int length) {
-    int j = 0;
-    bool nextEnd = true;
-    while (nextEnd) {
-        nextEnd = false;
-        ++j;
-        for (int i = 0; i < length - j; ++i) {
-            if (array[i] > array[i + 1]) {
-                float temp = array[i];
-                array[i] = array[i + 1];
-                array[i + 1] = temp;
-                nextEnd = true;
-            }
-        }
-    }
-
-    for (int i = 0; i < length; ++i)
-        cout << array[i] << ", ";
-}
-
 GA::~GA() {
     delete [] colonies;
 }

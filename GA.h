@@ -33,9 +33,6 @@ class GA
   
   int n_colonies;
   
-  void bubbleSort(float array[], int count);
-
-        int n_colonies;
 
 
 };
