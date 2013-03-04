@@ -1,7 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configurationDescriptor version="84">
   <logicalFolder name="root" displayName="root" projectFiles="true" kind="ROOT">
-    <df name="antbots-release1.4" root=".">
+    <df name="523GA" root=".">
+      <df name="task1">
+        <df name="cs_code">
+          <in>ga.m</in>
+          <in>ga_results.m</in>
+          <in>ga_run.m</in>
+          <in>ga_run_old.m</in>
+          <in>ga_w_run.m</in>
+          <in>ga_whit.m</in>
+          <in>plot_maxones.m</in>
+          <in>whitley_fit_test.m</in>
+        </df>
+      </df>
       <in>Ant.h</in>
       <in>Colony.cpp</in>
       <in>Colony.h</in>
