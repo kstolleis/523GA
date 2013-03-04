@@ -15,16 +15,16 @@
 
 class GA
 {
- public:
+    public:
 
-  GA(int pop);
-  void evolve(); // The function which evaluates the current population and creates a new one
-  int getNumberOfColonies();
-  Colony* getColony(int index);
-  Colony* getFittestColony();
-  float getAverageFitness();
-  float getMaxFitness();
-  ~GA();
+        GA(int pop);
+        void evolve();                  // The function which evaluates the current population and creates a new one
+        int getNumberOfColonies();
+        Colony* getColony(int index);
+        Colony* getFittestColony();
+        float getAverageFitness();
+        float getMaxFitness();
+        ~GA();
 
   private:
   Colony* colonies; // Array to hold the population of colonies
@@ -35,6 +35,8 @@ class GA
   
   void bubbleSort(float array[], int count);
 
-  
+        int n_colonies;
+
+
 };
 #endif
