@@ -99,10 +99,16 @@ Field::Field(int n_cols, Colony* cols[]) {
 
     // Fixed placement of two colonies
     colonies[0]->nestx = (int) grid_width * 0.25;
-    colonies[0]->nesty = (int) grid_height * 0.5;
+    colonies[0]->nesty = (int) grid_height * 0.25;
 
     colonies[1]->nestx = (int) grid_width * 0.75;
-    colonies[1]->nesty = (int) grid_height * 0.5;
+    colonies[1]->nesty = (int) grid_height * 0.75;
+    
+    colonies[2]->nestx = (int) grid_width * 0.25;
+    colonies[2]->nesty = (int) grid_height * 0.75;
+
+    colonies[3]->nestx = (int) grid_width * 0.75;
+    colonies[3]->nesty = (int) grid_height * 0.25;
     
     // Location of colonies to maximize area and minimize interaction 
 //    colonies[0]->nestx = (int) grid_width * 0.25;

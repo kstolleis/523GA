@@ -78,7 +78,7 @@ void GA::evolve() {
 
     // Allocate a place to put the new population
     Colony* new_colonies = new Colony[n_colonies];
-    const int count = n_colonies;
+//    const int count = n_colonies;
     
     // Include constant parameters for crossover and mutation functions
     int crossoverPercentage = 100;

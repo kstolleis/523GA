@@ -37,7 +37,7 @@ using namespace std;
 
 string version = "Release 1.4";
 
-const int n_generations = 1;          // How many generations should run before the program exits
+const int n_generations = 100;          // How many generations should run before the program exits
 const int n_interactions = 60;          // Number of pairwise interactions between colonies per generation
 const int n_colonies = 20;              // Number of colonies in each GAs population
 const int n_steps = 8000;               // The number of time steps to run on the Field where each time step updates the actions of all the ants on the field.
@@ -45,20 +45,22 @@ const int n_steps = 8000;               // The number of time steps to run on th
 // Create the two GAs we will use 
 GA* ga1 = new GA(n_colonies);
 GA* ga2 = new GA(n_colonies);
+GA* ga3 = new GA(n_colonies);
+GA* ga4 = new GA(n_colonies);
 
 int main(int argc, char *argv[]) {
 
-    bool gui_enabled = false;
-    bool coop_enabled = true;
+    bool gui_enabled = true;
+    bool coop_enabled = false;
      
     /* This is where the initial file for data output is created
        Cooperation or Competition creates different .csv files
      */
     ofstream resultsFile;
     if (coop_enabled == true) {
-        resultsFile.open("MaxMeanFitness_2_2_Coop_Roul.csv");
+        resultsFile.open("MaxMeanFitness_2_3_Coop_4Col.csv");
     } else {
-        resultsFile.open("MaxMeanFitness_2_2_Roul.csv");
+        resultsFile.open("MaxMeanFitness_2_3_4Col.csv");
     }
     resultsFile.close();
 
@@ -105,10 +107,12 @@ int main(int argc, char *argv[]) {
 
 
             // The number of colonies to place on the field at once
-            int pop = 2;
+            int pop = 4;
 
             Colony* col1 = NULL;
             Colony* col2 = NULL;
+            Colony* col3 = NULL;
+            Colony* col4 = NULL;
 
             // To prevent different threads from choosing the same colony check
             // that the colonies are not already foraging.
@@ -126,8 +130,22 @@ int main(int argc, char *argv[]) {
             } while (col2->foraging);
 
             col2->foraging = true;
+            
+            do {
+                int index = rand() % ga3->getNumberOfColonies();
+                col3 = ga3->getColony(index);
+            } while (col3->foraging);
 
-            Colony * colonies[] = {col1, col2};
+            col3->foraging = true;
+            
+            do {
+                int index = rand() % ga4->getNumberOfColonies();
+                col4 = ga4->getColony(index);
+            } while (col4->foraging);
+
+            col4->foraging = true;
+
+            Colony * colonies[] = {col1, col2, col3, col4};
 
             // Create a field on the stack for the colonies to interact on. Will lose scope each
             // iteration of the interaction for loop
@@ -172,15 +190,17 @@ int main(int argc, char *argv[]) {
 
             colonies[0]->foraging = false;
             colonies[1]->foraging = false;
+            colonies[2]->foraging = false;
+            colonies[3]->foraging = false;
             total_current_interaction++;
         }
 
         /* This simply opens the file created at the top of main
          */
         if (coop_enabled == true) {
-            resultsFile.open("MaxMeanFitness_2_2_Coop_Roul.csv", ios::out | ios::app);
+            resultsFile.open("MaxMeanFitness_2_3_Coop_4Col.csv", ios::out | ios::app);
         } else {
-            resultsFile.open("MaxMeanFitness_2_2_Roul.csv", ios::out | ios::app);
+            resultsFile.open("MaxMeanFitness_2_3_4Col.csv", ios::out | ios::app);
         }
 
         /* The Max Fitness, Mean Fitness and Genome of Best Colony from GA1
@@ -222,7 +242,41 @@ int main(int argc, char *argv[]) {
         resultsFile << ga2->getFittestColony()->dense_thresh_influence  << ',';
         resultsFile << ga2->getFittestColony()->dense_const_influence   << ',';
         resultsFile << ga2->getFittestColony()->decay_rate              << ',';
-        resultsFile << ga2->getFittestColony()->seeds_collected         << '\n';
+        resultsFile << ga2->getFittestColony()->seeds_collected         << ',';
+        
+        resultsFile << ga3->getMaxFitness()                             << ",";
+        resultsFile << ga3->getAverageFitness()                         << ",";
+        resultsFile << ga3->getFittestColony()->walk_drop_rate          << ',';
+        resultsFile << ga3->getFittestColony()->search_giveup_rate      << ',';
+        resultsFile << ga3->getFittestColony()->dir_dev_const           << ',';
+        resultsFile << ga3->getFittestColony()->dir_dev_coeff2          << ',';
+        resultsFile << ga3->getFittestColony()->dir_time_pow2           << ',';
+        resultsFile << ga3->getFittestColony()->trail_drop_rate         << ',';
+        resultsFile << ga3->getFittestColony()->dense_thresh            << ',';
+        resultsFile << ga3->getFittestColony()->dense_const             << ',';
+        resultsFile << ga3->getFittestColony()->dense_thresh_patch      << ',';
+        resultsFile << ga3->getFittestColony()->dense_const_patch       << ',';
+        resultsFile << ga3->getFittestColony()->dense_thresh_influence  << ',';
+        resultsFile << ga3->getFittestColony()->dense_const_influence   << ',';
+        resultsFile << ga3->getFittestColony()->decay_rate              << ',';
+        resultsFile << ga3->getFittestColony()->seeds_collected         << ',';
+        
+        resultsFile << ga4->getMaxFitness()                             << ",";
+        resultsFile << ga4->getAverageFitness()                         << ",";
+        resultsFile << ga4->getFittestColony()->walk_drop_rate          << ',';
+        resultsFile << ga4->getFittestColony()->search_giveup_rate      << ',';
+        resultsFile << ga4->getFittestColony()->dir_dev_const           << ',';
+        resultsFile << ga4->getFittestColony()->dir_dev_coeff2          << ',';
+        resultsFile << ga4->getFittestColony()->dir_time_pow2           << ',';
+        resultsFile << ga4->getFittestColony()->trail_drop_rate         << ',';
+        resultsFile << ga4->getFittestColony()->dense_thresh            << ',';
+        resultsFile << ga4->getFittestColony()->dense_const             << ',';
+        resultsFile << ga4->getFittestColony()->dense_thresh_patch      << ',';
+        resultsFile << ga4->getFittestColony()->dense_const_patch       << ',';
+        resultsFile << ga4->getFittestColony()->dense_thresh_influence  << ',';
+        resultsFile << ga4->getFittestColony()->dense_const_influence   << ',';
+        resultsFile << ga4->getFittestColony()->decay_rate              << ',';
+        resultsFile << ga4->getFittestColony()->seeds_collected         << '\n';
 
         // Close the file to complete write
         resultsFile.close();
@@ -237,6 +291,8 @@ int main(int argc, char *argv[]) {
         // of colonies (must be using crossover, mutation, tournament selection or elitism, etc)
         ga1->evolve();
         ga2->evolve();
+        ga3->evolve();
+        ga4->evolve();
 
     }
 
