@@ -32,6 +32,8 @@ class GA
   float crossover_rate;	// Percent chance for crossover.  50 is complete shuffling.  0 or 100 is no crossover
   
   int n_colonies;
+  
+  void bubbleSort(float array[], int count);
 
   
 };

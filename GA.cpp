@@ -9,6 +9,7 @@
 // The Genetic Algorithm Class implementation file
 #include "GA.h"
 #include "Utils.h"      // Some utility functions, ie. normalRand() is defined in Utils.h
+#include <ctime>
 
 using namespace std;
 using namespace utils;  // So we can access the namespace in Utils.h
@@ -26,6 +27,8 @@ GA::GA(int pop) {
     n_colonies = pop;
 
     colonies = new Colony[n_colonies];
+    
+    srand((unsigned int) time(NULL));
 
     // Set some initial random values into the first generation so we have initial diversity to work with.
     for (int col_count = 0; col_count < n_colonies; col_count++) {
@@ -70,44 +73,84 @@ Colony* GA::getColony(int index) {
 
 
 // Apply the genetic algorithm to the current population and generate a new population. 
-//Corresponds to the creation of a new generation.
+// Corresponds to the creation of a new generation.
 void GA::evolve() {
 
     // Allocate a place to put the new population
     Colony* new_colonies = new Colony[n_colonies];
+    const int count = n_colonies;
+    
+    // Include constant parameters for crossover and mutation functions
     int crossoverPercentage = 100;
     int mutationPercentage = 10;      // 10 is 10% chance of mutation, 5 is 20%, 20 is 5% -- and so on
+
+    // This is the cumulative sum of fitness values for roulette selection
+    float fitnessSum[count];
+    for (int j = 0; j < count; j++) {
+        cout << "fitness " << getColony(j)->getFitness() << endl;
+        if(j == 0) {
+            fitnessSum[j] = getColony(j)->getFitness();
+        } else {
+            fitnessSum[j] = fitnessSum[j-1] + getColony(j)->getFitness();
+        }
+    }
+    // This normalizes the fitness array for roulette selection
+    for (int k = 0; k < count; k++){
+        float temp = fitnessSum[k] / fitnessSum[count -1];
+        fitnessSum[k] = temp;
+    }
 
     // Parents of the next population are selected by tournament. Two members of the population are chosen randomly. The fitter of the two is chosen to be a parent. This is repeated so two parents are selected. The parents genomes are mutated and crossed over to produce offspring to fill the next population array. 
     for (int i = 0; i < n_colonies; i++) {
         int parent1;
         int parent2;
-        int candidate1;
-        int candidate2;
+//        int candidate1;
+//        int candidate2;
 
+        float rouletteSpin1 = rand() % 100001 / 100000.0;
+        float rouletteSpin2 = rand() % 100001 / 100000.0;
+        cout << "roulette val " << rouletteSpin1 << endl;
+        cout << "roulette val " << rouletteSpin2 << endl;
+
+        int mom = 0;
+        while (fitnessSum[mom] < rouletteSpin1) {
+            mom++;
+        }
+        parent1 = mom;
+        cout << parent1 << " " << colonies[parent1].getFitness() << endl;
+        int dad = 0;
+        while (fitnessSum[dad] < rouletteSpin2) {
+            dad++;
+        }
+        parent2 = dad;
+        cout << parent2 << " " << colonies[parent2].getFitness() << endl;
+        cout << "\n";
+        
         // 1st parent candidates
-        candidate1 = rand() % n_colonies;
-        candidate2 = rand() % n_colonies;
-        while (candidate1 == candidate2)
-            candidate2 = rand() % n_colonies;
-
-        if (colonies[candidate1].getFitness() > colonies[candidate2].getFitness()) {
-            parent1 = candidate1;
-        } else {
-            parent1 = candidate2;
-        }
-
-        // 2nd parent candidates
-        candidate1 = rand() % n_colonies;
-        candidate2 = rand() % n_colonies;
-        while (candidate1 == candidate2)
-            candidate2 = rand() % n_colonies;
-
-        if (colonies[candidate1].getFitness() > colonies[candidate2].getFitness()) {
-            parent2 = candidate1;
-        } else {
-            parent2 = candidate2;
-        }
+//        candidate1 = rand() % n_colonies;
+//        candidate2 = rand() % n_colonies;
+//        while (candidate1 == candidate2){
+//            candidate2 = rand() % n_colonies;
+//        }
+//
+//        if (colonies[candidate1].getFitness() > colonies[candidate2].getFitness()) {
+//            parent1 = candidate1;
+//        } else {
+//            parent1 = candidate2;
+//        }
+//
+//        // 2nd parent candidates
+//        candidate1 = rand() % n_colonies;
+//        candidate2 = rand() % n_colonies;
+//        while (candidate1 == candidate2){
+//            candidate2 = rand() % n_colonies;
+//        }
+//
+//        if (colonies[candidate1].getFitness() > colonies[candidate2].getFitness()) {
+//            parent2 = candidate1;
+//        } else {
+//            parent2 = candidate2;
+//        }
 
         // Begin crossover of the parental genomes. (This version of crossover is not standard)
 
@@ -439,6 +482,26 @@ float GA::getMaxFitness() {
             max = colonies[i].getFitness();
     }
     return max;
+}
+
+void bubbleSort(float array[], int length) {
+    int j = 0;
+    bool nextEnd = true;
+    while (nextEnd) {
+        nextEnd = false;
+        ++j;
+        for (int i = 0; i < length - j; ++i) {
+            if (array[i] > array[i + 1]) {
+                float temp = array[i];
+                array[i] = array[i + 1];
+                array[i + 1] = temp;
+                nextEnd = true;
+            }
+        }
+    }
+
+    for (int i = 0; i < length; ++i)
+        cout << array[i] << ", ";
 }
 
 GA::~GA() {
