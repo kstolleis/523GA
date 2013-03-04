@@ -42,17 +42,5 @@ class Ant
   float direction; // direction an ant who detected no trail at nest is traveling.  value in degrees.
   float search_direction; // direction in degrees that a searching ant moved in the previous time step (ideal direction, not grid direction)
 
-        // ant will be influenced by any pheromone trails at nest entrance?
-        // true = ants will follow pheromones if present instead of walk at random or return to patch
-        bool influenceable;     
-
-        int carrying;           // food type ant is carrying: 0 = no food; # = foot item of distribution #
-        int since_move;         // time steps since a searching ant last moved.
-        bool pen_down;          // false = ant not laying a trail; true = ant laying a trail
-        float prev_pher;        // Amount of pheromone on previous cell as ant moved along trail.
-        float prev_pher_scent;  // The out-going sum_pheromone an detected on the previous move by an ant following a trail.
-        float direction;        // direction an ant who detected no trail at nest is travelling.  value in degrees.
-        float search_direction; // direction in degrees that a searching ant moved in the previous time step (ideal direction, not grid direction)
-
     private:
 };
