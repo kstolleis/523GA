@@ -58,9 +58,9 @@ int main(int argc, char *argv[]) {
      */
     ofstream resultsFile;
     if (coop_enabled == true) {
-        resultsFile.open("MaxMeanFitness_2_3_Coop_4Col.csv");
+        resultsFile.open("MaxMeanFit_2_3_Coop_4Col.csv");
     } else {
-        resultsFile.open("MaxMeanFitness_2_3_4Col.csv");
+        resultsFile.open("MaxMeanFit_2_3_4Col.csv");
     }
     resultsFile.close();
 
@@ -198,9 +198,9 @@ int main(int argc, char *argv[]) {
         /* This simply opens the file created at the top of main
          */
         if (coop_enabled == true) {
-            resultsFile.open("MaxMeanFitness_2_3_Coop_4Col.csv", ios::out | ios::app);
+            resultsFile.open("MaxMeanFit_2_3_Coop_4Col.csv", ios::out | ios::app);
         } else {
-            resultsFile.open("MaxMeanFitness_2_3_4Col.csv", ios::out | ios::app);
+            resultsFile.open("MaxMeanFit_2_3_4Col.csv", ios::out | ios::app);
         }
 
         /* The Max Fitness, Mean Fitness and Genome of Best Colony from GA1
