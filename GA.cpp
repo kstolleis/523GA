@@ -78,35 +78,62 @@ void GA::evolve() {
     int crossoverPercentage = 100;
     int mutationPercentage = 10;      // 10 is 10% chance of mutation, 5 is 20%, 20 is 5% -- and so on
     int crossover_type = 0;
-    int num_crossovers = 10;
-    int parent_type = 1;
+    int num_crossovers = 4;
+    int parent_type = 0;
+    bool elitism = true;
     int bucket;
     int halfway = floor((float) n_colonies / 2);
+    int possibleParent1 = 0;
+    int possibleParent2 = halfway;
+    int parent1;
+    int parent2;
+    int fittest = 0;
+    
+    //int fits[20]; 
+    //for (int k = 0; k < n_colonies; k++) {
+        //fits[k] = colonies[k].getFitness();
+    //}
 
+    // get fittest colony
+    for (int k = 0; k < n_colonies; k++) {
+        if (colonies[fittest].getFitness() < colonies[k].getFitness()) {
+            fittest = k;
+        }
+    }
 
+    
+    if (parent_type == 1) {
+        // parent1 is fittest of first half of colonies; parent2 is fittest of latter half
+        for (int j = 0; j < halfway; j++) {
+            if (colonies[j].getFitness() > colonies[possibleParent1].getFitness()) {
+                possibleParent1 = j;
+            }
+            if (colonies[j+halfway].getFitness() > colonies[possibleParent2].getFitness()) {
+                possibleParent2 = j+halfway;
+            }
+        }
+        parent1 = possibleParent1;
+        parent2 = possibleParent2;
+        cout << "parents: " << parent1 << " " << parent2 << endl;
+    } else if (parent_type == 2) {
+        // parents are ordered by descending fitness. So first colony gets 
+        // highest and next highest fit parents, etc.
+        //sort(fits, fits+20);
+    }
 
+    // ELITISM
+    // find the fittest colony and put it into the new_colonies at the end of evolution
+    // fittest is index of fittest colony
+    //int fittest = *max_element(fits, fits+20);
+    cout << "fittest: " << fittest << endl;
+    
 
     // Parents of the next population are selected by tournament. Two members of the population are chosen randomly. The fitter of the two is chosen to be a parent. This is repeated so two parents are selected. The parents genomes are mutated and crossed over to produce offspring to fill the next population array. 
     for (int i = 0; i < n_colonies; i++) {
         int candidate1;
         int candidate2;
-        int possibleParent1 = 0;
-        int possibleParent2 = halfway;
-        int parent1;
-        int parent2;
 
         if (parent_type == 1) {
-            // parent1 is fittest of first half of colonies; parent2 is fittest of latter half
-            for (int j = 0; j < halfway; j++) {
-                if (colonies[j].getFitness() > colonies[possibleParent1].getFitness()) {
-                    possibleParent1 = j;
-                }
-                if (colonies[j+halfway].getFitness() > colonies[possibleParent2].getFitness()) {
-                    possibleParent2 = j+halfway;
-                }
-            }
-            parent1 = possibleParent1;
-            parent2 = possibleParent2;
         } else {
             // original parent-determination method
             candidate1 = rand() % n_colonies;
@@ -472,11 +499,32 @@ void GA::evolve() {
         sum_walk_drop += colonies[i].walk_drop_rate;
         sum_trail_drop += colonies[i].trail_drop_rate;
 
+        if (elitism  && (i == fittest)) {
+            cout << "ELITE NOW" << endl;
+            new_colonies[0].decay_rate = colonies[i].decay_rate;
+            new_colonies[0].walk_drop_rate = colonies[i].walk_drop_rate;
+            new_colonies[0].search_giveup_rate = colonies[i].search_giveup_rate;
+            new_colonies[0].trail_drop_rate = colonies[i].trail_drop_rate;
+            new_colonies[0].dir_dev_const = colonies[i].dir_dev_const;
+            new_colonies[0].dir_dev_coeff1 = colonies[i].dir_dev_coeff1;
+            new_colonies[0].dir_time_pow1 = colonies[i].dir_time_pow1;
+            new_colonies[0].dir_dev_coeff2 = colonies[i].dir_dev_coeff2;
+            new_colonies[0].dir_time_pow2 = colonies[i].dir_time_pow2;
+            new_colonies[0].dense_sens = colonies[i].dense_sens;
+            new_colonies[0].dense_thresh = colonies[i].dense_thresh;
+            new_colonies[0].dense_const = colonies[i].dense_const;
+            new_colonies[0].dense_thresh_patch = colonies[i].dense_thresh_patch;
+            new_colonies[0].dense_const_patch = colonies[i].dense_const_patch;
+            new_colonies[0].dense_thresh_influence = colonies[i].dense_thresh_influence;
+            new_colonies[0].dense_const_influence = colonies[i].dense_const_influence;
+            new_colonies[0].prop_active = colonies[i].prop_active;
+            new_colonies[0].activate_sensitivity = colonies[i].activate_sensitivity;
+            new_colonies[0].decay_rate_return = colonies[i].decay_rate_return;
+        }
 
         // Copy the new populations genome back into the population array
 
         colonies[i].decay_rate = new_colonies[i].decay_rate;
-
         colonies[i].walk_drop_rate = new_colonies[i].walk_drop_rate;
         colonies[i].search_giveup_rate = new_colonies[i].search_giveup_rate;
         colonies[i].trail_drop_rate = new_colonies[i].trail_drop_rate;

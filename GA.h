@@ -12,6 +12,7 @@
 #define _GA
 
 #include "Colony.h"
+#include <Algorithm>
 
 class GA
 {
