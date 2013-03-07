@@ -76,7 +76,7 @@ Field::Field(int n_cols, Colony* cols[]) {
     for (int i = 0; i < grid_width; i++)
         gen_grid[i] = new Location[grid_height];
 
-    //Clean up grid for new evalution
+    //Clean up grid for new evaluation
     for (int x = 0; x < grid_width; x++) {
         for (int y = 0; y < grid_width; y++) {
             gen_grid[x][y].p1 = 0;
@@ -109,13 +109,6 @@ Field::Field(int n_cols, Colony* cols[]) {
 
     colonies[3]->nestx = (int) grid_width * 0.75;
     colonies[3]->nesty = (int) grid_height * 0.25;
-    
-    // Location of colonies to maximize area and minimize interaction 
-//    colonies[0]->nestx = (int) grid_width * 0.25;
-//    colonies[0]->nesty = (int) grid_height * 0.25;
-//
-//    colonies[1]->nestx = (int) grid_width * 0.75;
-//    colonies[1]->nesty = (int) grid_height * 0.75;
 
     int locations[4 * num_each_clump][2];
     int food_count = 0;

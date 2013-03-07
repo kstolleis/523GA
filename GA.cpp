@@ -82,7 +82,7 @@ void GA::evolve() {
     
     // Include constant parameters for crossover and mutation functions
     int crossoverPercentage = 100;
-    int mutationPercentage = 10;      // 10 is 10% chance of mutation, 5 is 20%, 20 is 5% -- and so on
+    int mutationPercentage = 20;      // 10 is 10% chance of mutation, 5 is 20%, 20 is 5% -- and so on
 
     // This is the cumulative sum of fitness values for roulette selection
 //    float fitnessSum[count];
