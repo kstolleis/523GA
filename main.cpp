@@ -3,6 +3,7 @@
    CS523 Spring 2013
    University of New Mexico
    All code modified from base code provided by Dr. Melanie Moses
+   Only files modified for this project were main.cpp, field.pp and GA.cpp
    See Below Comments 
  */
 
@@ -45,6 +46,7 @@ const int n_steps = 8000; // The number of time steps to run on the Field where 
 // Create the two GAs we will use 
 GA* ga1 = new GA(n_colonies);
 GA* ga2 = new GA(n_colonies);
+// Creates additional GAs for two more colonies
 GA* ga3 = ga2;
 GA* ga4 = ga1;
 
@@ -111,6 +113,7 @@ int main(int argc, char *argv[]) {
 
             Colony* col1 = NULL;
             Colony* col2 = NULL;
+            // Added addtional colonies here
             Colony* col3 = NULL;
             Colony* col4 = NULL;
 
@@ -131,6 +134,7 @@ int main(int argc, char *argv[]) {
 
             col2->foraging = true;
 
+            // Set the foraging for the two new colonies
             do {
                 int index = rand() % ga3->getNumberOfColonies();
                 col3 = ga3->getColony(index);
@@ -145,6 +149,7 @@ int main(int argc, char *argv[]) {
 
             col4->foraging = true;
 
+            // Choose the two or four colony type
             Colony * colonies[] = {col1, col2, col3, col4};
 //            Colony * colonies[] = {col1, col2};
 
@@ -196,6 +201,7 @@ int main(int argc, char *argv[]) {
 
             colonies[0]->foraging = false;
             colonies[1]->foraging = false;
+            // New colonies interactions and foraging reset
             colonies[2]->foraging = false;
             colonies[3]->foraging = false;
             total_current_interaction++;
@@ -249,7 +255,9 @@ int main(int argc, char *argv[]) {
         resultsFile << ga2->getFittestColony()->dense_const_influence << ',';
         resultsFile << ga2->getFittestColony()->decay_rate << ',';
         resultsFile << ga2->getFittestColony()->seeds_collected << ',';
-
+        
+        // Here is the file output for the new two colonies.  Just continues the 
+        // .csv line along with colonies one and two
         resultsFile << ga3->getMaxFitness() << ",";
         resultsFile << ga3->getAverageFitness() << ",";
         resultsFile << ga3->getFittestColony()->walk_drop_rate << ',';
@@ -297,6 +305,7 @@ int main(int argc, char *argv[]) {
         // of colonies (must be using crossover, mutation, tournament selection or elitism, etc)
         ga1->evolve();
         ga2->evolve();
+        // Set the new colonies to evolve here
         ga3->evolve();
         ga4->evolve();
 

@@ -104,6 +104,7 @@ Field::Field(int n_cols, Colony* cols[]) {
     colonies[1]->nestx = (int) grid_width * 0.75;
     colonies[1]->nesty = (int) grid_height * 0.75;
     
+    // This is the only change to Field class for additional colonies
     colonies[2]->nestx = (int) grid_width * 0.25;
     colonies[2]->nesty = (int) grid_height * 0.75;
 
